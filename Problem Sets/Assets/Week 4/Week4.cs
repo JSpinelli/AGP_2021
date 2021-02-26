@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -50,23 +51,38 @@ public class Week4 : MonoBehaviour
 
     public int SmallestPrimeFactor(int input)
     {
-        return 0;
+        if (input % 2 == 0) 
+            return 2; 
+        
+        for (int i = 3; i * i <= input; i += 2) { 
+            if (input % i == 0) 
+                return i; 
+        } 
+        return input;
     }
 
     public int NumberOfDigits(int input)
     {
-        return 0;
+        return input.ToString().Length;
     }
 
+    private Func<int,int> _function;
     // Imagine this is your "Start()" function
     public void Initialize()
     {
-        
+        _function = SmallestPrimeFactor;
+        _function += NumberOfDigits;
+
     }
 
     public int ChangingFunction(int input)
     {
-        return 0;
+        if (_function(input) == 3)
+        {
+            _function-=NumberOfDigits;
+            return _function(input);
+        }
+        return _function(input);
     }
     
     
