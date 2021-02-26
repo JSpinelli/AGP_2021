@@ -22,7 +22,11 @@ public class Week4 : MonoBehaviour
 
     private int BytesToInt(byte a, byte b, byte c, byte d)
     {
-        return 256;
+        int parcialSum = d;
+        parcialSum +=(int) Mathf.Pow(2,8) * c;
+        parcialSum += (int) Mathf.Pow(2,16) * b; 
+        parcialSum += (int) Mathf.Pow(2,24) * a;
+        return parcialSum;
     }
 
     private int PowerOfTwo(int power)
