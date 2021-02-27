@@ -1,20 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
-using Vector2 = UnityEngine.Vector2;
 
 struct GoData
 {
     public char typeOfObject;
     public List<Vector2> blobItBelongs;
 }
+
 public class GoSolver : MonoBehaviour
 {
     public TextAsset[] myGoBoards;
+
     // Start is called before the first frame update
     public GameObject boardSlot;
-    public GameObject goChip;
+    public GameObject blackChip;
+    public GameObject whiteChip;
     private GoData[,] board;
     private int width;
     private int height;
@@ -30,7 +31,6 @@ public class GoSolver : MonoBehaviour
         bool foundLine = false;
         for (int i = 0; i < currentBoard.Length; i++)
         {
-            
             if (currentBoard[i] == '\n')
             {
                 height++;
@@ -41,14 +41,14 @@ public class GoSolver : MonoBehaviour
                 width++;
             }
         }
+
         board = new GoData[width, height];
-        Debug.Log("Width: "+width);
-        Debug.Log("Height: "+height);
+        Debug.Log("Width: " + width);
+        Debug.Log("Height: " + height);
         int wIndex = 0;
         int hIndex = 0;
         for (int i = 0; i < currentBoard.Length; i++)
         {
-            
             if (currentBoard[i] == '\n')
             {
                 hIndex++;
@@ -61,6 +61,7 @@ public class GoSolver : MonoBehaviour
                     board[wIndex, hIndex].typeOfObject = currentBoard[i];
                     board[wIndex, hIndex].blobItBelongs = null;
                 }
+
                 wIndex++;
             }
         }
@@ -69,7 +70,8 @@ public class GoSolver : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
-
+                if (i != height - 1 && j != width - 1)
+                    Instantiate(boardSlot, new Vector3(j + 0.5f, -i - 0.5f, 0f), Quaternion.identity);
                 List<Vector2> myBlob = CheckMyself(j, i);
                 if (myBlob != null)
                 {
@@ -77,9 +79,9 @@ public class GoSolver : MonoBehaviour
                 }
             }
         }
-        
-        Debug.Log("Number of White Blobs: "+ whiteBlobs.Count);
-        Debug.Log("Number of Black Blobs: "+ blackBlobs.Count);
+
+        Debug.Log("Number of White Blobs: " + whiteBlobs.Count);
+        Debug.Log("Number of Black Blobs: " + blackBlobs.Count);
     }
 
     public List<Vector2> CheckMyself(int j, int i)
@@ -92,16 +94,20 @@ public class GoSolver : MonoBehaviour
                 newList.Add(new Vector2(j, i));
                 if (board[j, i].typeOfObject == 'W')
                 {
-
+                    
+                    Instantiate(whiteChip, new Vector3(j, -i, -1f), Quaternion.identity);
                     whiteBlobs.Add(newList);
                     return newList;
                 }
-                //Debug.Log(board[j, i].typeOfObject);
+
+                Instantiate(blackChip, new Vector3(j, -i, -1f), Quaternion.identity);
                 blackBlobs.Add(newList);
                 return newList;
             }
+
             return board[j, i].blobItBelongs;
         }
+
         return null;
     }
 
@@ -111,19 +117,18 @@ public class GoSolver : MonoBehaviour
         {
             if (board[j, i].typeOfObject == board[j + 1, i].typeOfObject)
             {
-                myBlob.Add(new Vector2(j+1,i));
+                myBlob.Add(new Vector2(j + 1, i));
                 board[j + 1, i].blobItBelongs = myBlob;
             }
         }
 
         if (i + 1 < height)
         {
-            if (board[j, i].typeOfObject == board[j, i+1].typeOfObject)
+            if (board[j, i].typeOfObject == board[j, i + 1].typeOfObject)
             {
-                myBlob.Add(new Vector2(j,i+1));
-                board[j, i+1].blobItBelongs = myBlob;
+                myBlob.Add(new Vector2(j, i + 1));
+                board[j, i + 1].blobItBelongs = myBlob;
             }
         }
     }
 }
-
