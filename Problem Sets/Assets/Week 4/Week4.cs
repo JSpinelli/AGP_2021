@@ -23,16 +23,26 @@ public class Week4 : MonoBehaviour
 
     private int BytesToInt(byte a, byte b, byte c, byte d)
     {
-        int parcialSum = d;
-        parcialSum +=(int) Mathf.Pow(2,8) * c;
-        parcialSum += (int) Mathf.Pow(2,16) * b; 
-        parcialSum += (int) Mathf.Pow(2,24) * a;
-        return parcialSum;
+        return (a << 24) + (b << 16) + (c << 8) + d;
+        
+        return (PowerOfTwo(24) * a) + (PowerOfTwo(16) * b) + (PowerOfTwo(8) * c) + d;
     }
 
     private int PowerOfTwo(int power)
     {
-        return 0;
+        // return (int) Mathf.Pow(2, power);
+
+        // Will not return correct value for negative powers.
+        if (power <= 0) return 1;
+
+        var toReturn = 2;
+
+        for (var i = 1; i < power; i++)
+        {
+            toReturn *= 2;
+        }
+
+        return toReturn;
     }
 
     /*
@@ -47,6 +57,7 @@ public class Week4 : MonoBehaviour
      */
 
     delegate int MathFunction(int input);
+    
     private MathFunction currentFunction;
 
     public int SmallestPrimeFactor(int input)
@@ -63,7 +74,17 @@ public class Week4 : MonoBehaviour
 
     public int NumberOfDigits(int input)
     {
-        return input.ToString().Length;
+        input = Mathf.Abs(input);
+
+        var digits = 1;
+        
+        while (true)
+        {
+            if (input < 10) return digits;
+
+            input /= 10;
+            digits++;
+        }
     }
 
     private Func<int,int> _function;

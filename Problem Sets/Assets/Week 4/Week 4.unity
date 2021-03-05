@@ -161,15 +161,15 @@ MonoBehaviour:
 
     <align=left>
 
-    <color="green">PASS</color> Number
+    <color="red">FAIL</color> Number
     of digits works.
 
-    <color="green">PASS</color> Smallest prime number is correct.
+    <color="red">FAIL</color> Smallest prime number is correct.
 
-    <color="green">PASS</color>
+    <color="red">FAIL</color>
     Changes when input is 3.
 
-    <color="green">PASS</color> Doesn''t change back
+    <color="red">FAIL</color> Doesn''t change back
     when the input is 3 again.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1d26e07fac901459abb6ca7b75c94567, type: 2}
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Week 1 Assignment
+  m_text: Week 4 Assignment
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1d26e07fac901459abb6ca7b75c94567, type: 2}
   m_sharedMaterial: {fileID: 21021748947663650, guid: 1d26e07fac901459abb6ca7b75c94567,
@@ -657,13 +657,13 @@ MonoBehaviour:
     <color="green">PASS</color> Correct
     for (0, 0, 1, 0).
 
-    <color="green">PASS</color> Correct for (0, 42, 1, 0).
+    <color="red">FAIL</color> Correct for (0, 42, 1, 0).
 
-    <color="green">PASS</color>
+    <color="red">FAIL</color>
     Correct for (1, 1, 1, 1).
 
-    <color="green">PASS</color> Correct for (2, 1,
-    1, 1).
+    <color="red">FAIL</color> Correct for (2, 1, 1,
+    1).
 
 '
   m_isRightToLeft: 0
