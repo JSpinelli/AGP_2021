@@ -33,7 +33,7 @@ public class Week5 : MonoBehaviour
             Thief,
             Sorcerer
         }
-        
+
         public Class classType;
         public string name;
         public uint maxHealth;
@@ -46,7 +46,66 @@ public class Week5 : MonoBehaviour
     {
         var toReturn = new List<Player>();
 
+        string[] lines = toParse.text.Split('\n');
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string[] values = lines[i].Split(',');
+            if (values.Length > 4)
+            {
+                Player pl = new Player();
+                pl.name = values[0];
+                pl.maxHealth = uint.Parse(values[2]);
+                pl.stats = Array.ConvertAll(SubArray(values, 3, 5), int.Parse);
+                pl.alive = values[8] == "TRUE";
+                pl.location = new Vector2(
+                    float.Parse((values[9].Substring(1, values[9].Length - 1))),
+                    float.Parse(values[10].Substring(0, values[10].Length - 2)));
+                switch (values[1])
+                {
+                    case "Monk":
+                    {
+                        pl.classType = Player.Class.Monk;
+                        break;
+                    }
+                    case "Wizard":
+                    {
+                        pl.classType = Player.Class.Wizard;
+                        break;
+                    }
+                    case "Druid":
+                    {
+                        pl.classType = Player.Class.Druid;
+                        break;
+                    }
+                    case "Thief":
+                    {
+                        pl.classType = Player.Class.Thief;
+                        break;
+                    }
+                    case "Sorcerer":
+                    {
+                        pl.classType = Player.Class.Sorcerer;
+                        break;
+                    }
+                    default:
+                    {
+                        pl.classType = 0;
+                        break;
+                    }
+                }
+
+                toReturn.Add(pl);
+            }
+        }
+
         return toReturn;
+    }
+
+    public string[] SubArray(string[] array, int offset, int length)
+    {
+        string[] result = new string[length];
+        Array.Copy(array, offset, result, 0, length);
+        return result;
     }
 
     /*
@@ -63,21 +122,41 @@ public class Week5 : MonoBehaviour
     public int NumberAboveScore(TextAsset jsonFile, int score)
     {
         var toReturn = 0;
-     
+        var myObject = JSON.Parse(jsonFile.text);
+        foreach (var scores in myObject["highScores"])
+        {
+            if (scores.Value["score"] > score)
+            {
+                toReturn++;
+            }
+        }
+
         return toReturn;
     }
 
     public string GetHighScoreName(TextAsset jsonFile)
     {
-        return "";
+        var myObject = JSON.Parse(jsonFile.text);
+        var currentTop = 0;
+        var currentTopHolder = "";
+        foreach (var scores in myObject["highScores"])
+        {
+            if (scores.Value["score"] > currentTop)
+            {
+                currentTop = scores.Value["score"];
+                currentTopHolder = scores.Value["player"];
+            }
+        }
+
+        return currentTopHolder;
     }
-    
+
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //
 
     public TextMeshProUGUI csvTest, networkTest;
     public TextAsset csvExample, jsonExample;
     private Coroutine checkingScores;
-    
+
     private void Update()
     {
         csvTest.text = "CSV Parser\n<align=left>\n";
@@ -92,7 +171,7 @@ public class Week5 : MonoBehaviour
         {
             csvTest.text += Success(parsedPlayers1.Any(p => p.name == "Jeff") &&
                                     parsedPlayers1.Any(p => p.name == "Stonks")
-                            ) + " read in player names correctly.\n";
+            ) + " read in player names correctly.\n";
             csvTest.text +=
                 Success(parsedPlayers1.First(p => p.name == "Jeff").alive &&
                         !parsedPlayers1.First(p => p.name == "Stonks").alive) + " Correctly read 'alive'.\n";
@@ -109,12 +188,13 @@ public class Week5 : MonoBehaviour
                 Success(parsedPlayers1.First(p => p.name == "Fortune").location == new Vector2(12.322f, 42f)) +
                 " Correctly read in location.\n";
         }
-        
+
         networkTest.text = "JSON Data\n<align=left>\n";
         networkTest.text += Success(NumberAboveScore(jsonExample, 10) == 6) + " number above score worked correctly.\n";
-        networkTest.text += Success(GetHighScoreName(jsonExample) == "GUW") + " get high score name worked correctly.\n";
+        networkTest.text +=
+            Success(GetHighScoreName(jsonExample) == "GUW") + " get high score name worked correctly.\n";
     }
-    
+
     private string Success(bool test)
     {
         return test ? "<color=\"green\">PASS</color>" : "<color=\"red\">FAIL</color>";
