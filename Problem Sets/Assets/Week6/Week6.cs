@@ -35,13 +35,55 @@ public class Week6 : MonoBehaviour
 
     public IEnumerator NumberAboveScore(string URL, int score)
     {
-        yield return 0;
+        var data = "";
+        var toReturn = 0;
+        var www = UnityWebRequest.Get(URL);
+        yield return www.SendWebRequest();
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            data = www.downloadHandler.text;
+            var myObject = JSON.Parse(data);
+            foreach (var scores in myObject["highScores"])
+            {
+                if (scores.Value["score"] > score)
+                {
+                    toReturn++;
+                }
+            }
+        }
+
+        yield return toReturn;
     }
     
     public IEnumerator GetHighScoreName(string URL)
     {
-        
-        yield return "Name";
+        var data = "";
+        var currentTopHolder = "";
+        var www = UnityWebRequest.Get(URL);
+        yield return www.SendWebRequest();
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            data = www.downloadHandler.text;
+            var myObject = JSON.Parse(data);
+            var currentTop = 0;
+            foreach (var scores in myObject["highScores"])
+            {
+                if (scores.Value["score"] > currentTop)
+                {
+                    currentTop = scores.Value["score"];
+                    currentTopHolder = scores.Value["player"];
+                }
+            }
+        }
+        yield return currentTopHolder;
     }
     
     /*
@@ -53,6 +95,26 @@ public class Week6 : MonoBehaviour
 
     public IEnumerator CheckServerAvailability(string URL, Action onSuccess, Action onFailure)
     {
+        var data = "";
+        var www = UnityWebRequest.Get(URL);
+        yield return www.SendWebRequest();
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+            onFailure.Invoke();
+        }
+        else
+        {
+            data = www.downloadHandler.text;
+            if (data == "available")
+            {
+                onSuccess.Invoke();
+            }
+            else
+            {
+                onFailure.Invoke();
+            }
+        }
         yield return null;
     }
     
@@ -65,12 +127,26 @@ public class Week6 : MonoBehaviour
 
     public Func<string, string> StringReverser()
     {
-        return s => "";
+        return (string s) =>
+        {
+            Func<string, string> toReturn = Reverse;
+            return toReturn(s);
+        };
+    }
+
+    public string Reverse(string toReverse)
+    {
+        char[] charArray = toReverse.ToCharArray();
+        Array.Reverse( charArray );
+        return new string( charArray );
     }
 
     public Action<TextMeshProUGUI> AddSuccess()
     {
-        return tmp => { };
+        return (tmp) =>
+        {
+            tmp.text = tmp.text+"\n Succesfully added line";
+        };
     }
     
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //
