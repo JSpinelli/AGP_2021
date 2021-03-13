@@ -121,6 +121,8 @@ public class Week5 : MonoBehaviour
 
     public int NumberAboveScore(TextAsset jsonFile, int score)
     {
+        var parsed = JSON.Parse(jsonFile.text);
+
         var toReturn = 0;
         var myObject = JSON.Parse(jsonFile.text);
         foreach (var scores in myObject["highScores"])
