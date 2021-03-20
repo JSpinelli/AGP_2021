@@ -89,7 +89,7 @@ public class Week6 : MonoBehaviour
     /*
      * The second problem set is making a function that can handle callbacks.  Imagine you're checking a master server
      * to see whether there's a game server available or not.  Make a coroutine that takes in a URL and two Actions.
-     * If it receives the string "available", it invokes the Action for success, if it's not available, it invokes the
+     * If it receives the string "available", it invokes the Action for success, otherwise, it invokes the
      * Action for failure.
      */
 
@@ -148,7 +148,7 @@ public class Week6 : MonoBehaviour
             tmp.text = tmp.text+"\n Succesfully added line";
         };
     }
-    
+
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //
 
     public TextMeshProUGUI networkTest, callbackTest, lambdaTest;
