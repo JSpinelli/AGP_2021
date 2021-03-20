@@ -21,26 +21,43 @@ public class Week7 : MonoBehaviour
     // Return the reversed version of the input.
     public string ReverseString(string toReverse)
     {
-        return "";
+        if (toReverse.Length == 0) return "";
+        return toReverse.Substring(toReverse.Length-1,1) + ReverseString(toReverse.Substring(0,toReverse.Length-1));
     }
 
     // Return whether or not the string is a palindrome
     public bool IsPalindrome(string toCheck)
     {
-        return false;
+        if (toCheck.Length-2 <= 0) return toCheck[0] == toCheck[toCheck.Length-1];
+        return (toCheck[0] == toCheck[toCheck.Length-1]) && IsPalindrome(toCheck.Substring(1,toCheck.Length-2));
     }
 
     // Return all strings that can be made from the set characters using all characters.
     public string[] AllStringsFromCharacters(params char[] characters)
     {
-        return new string[0];
+        if (characters.Length == 1) return new []{""+characters[0]};
+        List<string> permutations = new List<string>();
+        for (int i = 0; i < characters.Length; i++)
+        {
+            List<char> currentChars = new List<char>(characters);
+            currentChars.RemoveAt(i);
+            List<string> myPermutations = new List<string>(AllStringsFromCharacters(currentChars.ToArray()));
+            foreach (var rest in myPermutations)
+            {
+                permutations.Add(characters[i]+rest);
+            }
+        }
+        return permutations.ToArray();
     }
     
     // Return the sum of all the numbers given.
 
     public int SumOfAllNumbers(params int[] numbers)
     {
-        return 0;
+        if (numbers.Length == 1) return numbers[0];
+        List<int> subArray = new List<int>(numbers);
+        subArray.RemoveAt(0);
+        return numbers[0] + SumOfAllNumbers(subArray.ToArray());
     }
     
     /*
