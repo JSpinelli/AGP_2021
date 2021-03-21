@@ -70,7 +70,9 @@ public class Week7 : MonoBehaviour
 
     public int TotalCansPurchasable(float money, float price, float canRefund)
     {
-        return 0;
+        if ((money - price) == 0) return 1;
+        if ((money - price) < 0) return 0;
+        return 1 + TotalCansPurchasable(money-price+canRefund,price,canRefund);
     }
     
     // =========================== DON'T EDIT BELOW THIS LINE =========================== //
