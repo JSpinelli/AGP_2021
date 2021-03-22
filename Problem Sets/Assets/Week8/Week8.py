@@ -13,16 +13,30 @@ ls (list current directory)
 
 # Return true if even, false if odd
 def isEven(input) :
-	return True
+	if (input % 2 ) == 0 :
+		return True
+	else:
+		return False 
 
 
 # Return the product of the input and all positive integers below it.
 def factorial(input) :
-	return input
+	result = 1
+	for i in range(1,input+1) :
+		result = result * i
+	return result
 
 # Given a list of numbers, return the difference between the largest and smallest.
 def widthOfList(input) :
-	return 0
+	print(input[0])
+	largest = input[0]
+	smallest = input[0]
+	for i in input:
+		if (i>= largest):
+			largest = i
+		if (i<= smallest):
+			smallest = i
+	return largest - smallest
 
 """
 
@@ -34,11 +48,24 @@ Write a function that takes in a number and determines whether it's the same ups
 
 """
 def sameUpsideDown(input) :
+	string = str(input)
+	for i in range(0,int(len(string)/2)):
+		if not ((string[i]=='6' and string[len(string)-i-1]=='9') or (string[i]=='0' and string[len(string)-i-1]=='0') or (string[i]=='8' and string[len(string)-i-1]=='8') or (string[i]=='9' and string[len(string)-i-1]=='6')):
+			return False
 	return True
 
 
 # Read the provided list of words, write to "output.txt" all words of given length that start with that letter.
 def allWordsOfLength(length, startingLetter) :
+	listOfWords=[]
+	with open('wordlist.txt') as theList:
+		for line in theList.readlines():
+			for word in line.split('\n'):
+				if  (len(word)==length) and (word[0] == startingLetter):
+					listOfWords.append(word)
+	f = open("output.txt", "w")
+	for word in listOfWords:
+		f.write(word+"\n")
 	return 0
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #

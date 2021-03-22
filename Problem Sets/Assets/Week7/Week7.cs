@@ -182,7 +182,7 @@ public class Week7 : MonoBehaviour
      * a given amount of money, assuming they always return all the cans and then buy as much soda as they can.
      */
 
-    public int TotalCansPurchasable(float money, float price, float refundForCan)
+    public int TotalCansPurchasable(float money, float price, float canRefund)
     {
         if ((money - price) == 0) return 1;
         if ((money - price) < 0) return 0;
