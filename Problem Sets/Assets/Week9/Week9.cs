@@ -39,10 +39,19 @@ public class Week9 : MonoBehaviour
         }
 
         return false;
+        */
+        
+        foreach (var child in root.children)
+        {
+            if (ContainsNumber(child, number))
+                return true;
+        }
+
+        return false;
     }
 
     // write a function that returns true if the tree contains duplicates, false if not.
-    public bool ContainsDuplicates(Node root)
+    public bool ContainsDuplicates(Node root, HashSet<int> values = null)
     {
         List<int> myNumbers = new List<int>();
         return ScanForDuplicates(root, myNumbers);
@@ -64,7 +73,12 @@ public class Week9 : MonoBehaviour
         }
 
         return false;
+        
+        //var values = new HashSet<int>();
+
+        // return DuplicateRecursive(root, values);
     }
+
 
     // write a function to add a new node to the tree as a child of a node w/ value 'toAddTo'
     // return false if you can't find the node to add to, true if you successfully add it.
